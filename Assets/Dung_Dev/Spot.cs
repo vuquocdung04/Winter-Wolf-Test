@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Spot : MonoBehaviour
 {
-    public Fish fish { get; private set; }
+    public Fish fish;
     
     public bool IsEmpty() => fish == null;
 

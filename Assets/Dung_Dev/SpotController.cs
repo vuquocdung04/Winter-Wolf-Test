@@ -8,34 +8,46 @@ public class SpotController : MonoBehaviour
     public int totalSpotNeeded = 4;
 
     public List<Spot> spots = new List<Spot>();
-    
+
     public void Init()
     {
     }
 
     public void OnFishSelected(Fish fishSelected)
     {
-        if (IsSpotFull())
-        {
-            Debug.Log("Spot is full");
-            return;
-        }
+        if (IsSpotFull()) return;
+
+        fishSelected.originalPos = fishSelected.transform.position;
+        fishSelected.isFlightToSpot = true;
+        
         int indexEmpty = FindInsertSameType(fishSelected.id);
-        
         MoveAllToRight(indexEmpty);
-        
+
         spots[indexEmpty].SetFish(fishSelected);
         fishSelected.MoveToSpot(spots[indexEmpty]);
 
-        DOVirtual.DelayedCall(fishSelected.moveDuration + 0.01f, delegate
+        DOVirtual.DelayedCall(fishSelected.moveDuration + 0.01f, delegate { HandleMatch3(); });
+    }
+
+    public void OnSpotFishSelected(Fish fishSelected)
+    {
+        Spot currentSpot = null;
+        foreach (var spot in spots)
         {
-            HandleMatch3();
-        });
+            if(spot.fish == fishSelected)
+                currentSpot = spot;
+        }
+        
+        if(currentSpot == null) return;
+        currentSpot.SetFish(null);
+        fishSelected.isFlightToSpot = false;
+        fishSelected.ReturnToOriginalPos();
+        MoveAllToLeft();
     }
 
     private void HandleMatch3()
     {
-        List<Fish> listToDestroy =  new List<Fish>();
+        List<Fish> listToDestroy = new List<Fish>();
 
         for (int i = 0; i < spots.Count - 2; i++)
         {
@@ -50,35 +62,36 @@ public class SpotController : MonoBehaviour
                     listToDestroy.Add(fish0);
                     listToDestroy.Add(fish1);
                     listToDestroy.Add(fish2);
-                    
+
                     spots[i].SetFish(null);
                     spots[i + 1].SetFish(null);
                     spots[i + 2].SetFish(null);
                 }
             }
         }
+
         if (listToDestroy.Count >= 3)
         {
-            for(int i = listToDestroy.Count - 1; i >= 0; i--)
+            for (int i = listToDestroy.Count - 1; i >= 0; i--)
                 listToDestroy[i].Animation();
-            
+
             GamePlayController.instance.playerContain.levelGenerator.HandleWin();
             MoveAllToLeft();
             Debug.Log("Match 3");
         }
         else
         {
-            if (IsSpotFull())
+            if (IsSpotFull() && GamePlayController.instance.IsGameModeDefault())
             {
                 GamePlayController.instance.gameScene.ShowLosePopup();
             }
         }
     }
 
-    private void MoveAllToLeft()
+    public void MoveAllToLeft()
     {
         List<Fish> activeFishInSpot = new List<Fish>();
-        
+        Debug.Log(activeFishInSpot.Count);
         for (int i = 0; i < spots.Count; i++)
         {
             if (!spots[i].IsEmpty())
@@ -94,20 +107,20 @@ public class SpotController : MonoBehaviour
             activeFishInSpot[i].MoveToSpot(spots[i]);
         }
     }
-    
+
     private void MoveAllToRight(int insertIndex)
     {
         int firstEmptySpot = GetFirstEmptySpot();
-        if(firstEmptySpot == insertIndex)  return;
+        if (firstEmptySpot == insertIndex) return;
 
         for (int i = firstEmptySpot; i > insertIndex; i--)
         {
             Spot currentSpot = spots[i];
             Spot prevSpot = spots[i - 1];
-            
+
             currentSpot.SetFish(prevSpot.fish);
             prevSpot.SetFish(null);
-            
+
             currentSpot.fish.MoveToSpot(currentSpot);
         }
     }
@@ -115,7 +128,7 @@ public class SpotController : MonoBehaviour
     private int FindInsertSameType(int fishId)
     {
         int lastIndexSameType = -1;
-        
+
         for (int i = 0; i < spots.Count; i++)
         {
             if (!spots[i].IsEmpty() && spots[i].fish.id == fishId)
@@ -126,27 +139,29 @@ public class SpotController : MonoBehaviour
 
         if (lastIndexSameType == -1)
             return GetFirstEmptySpot();
-        
+
         return lastIndexSameType + 1;
     }
-    
+
 
     private int GetFirstEmptySpot()
     {
         for (int i = 0; i < spots.Count; i++)
         {
-            if(spots[i].IsEmpty()) return i;
+            if (spots[i].IsEmpty()) return i;
         }
+
         Debug.LogError("Not found empty spot");
         return 2026;
     }
-    
+
     private bool IsSpotFull()
     {
         foreach (var spot in spots)
         {
-            if(spot.IsEmpty()) return false;
+            if (spot.IsEmpty()) return false;
         }
+
         return true;
     }
 

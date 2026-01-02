@@ -54,6 +54,34 @@ public class AutoPlay : MonoBehaviour
     [ContextMenu("Auto Lose")]
     private void AutoLose()
     {
+        StartCoroutine(AutoLoseRoutine());
+    }
+
+    private IEnumerator AutoLoseRoutine()
+    {
+        var spotController = GamePlayController.instance.playerContain.spotController;
+        var levelController = GamePlayController.instance.playerContain.levelGenerator;
         
+        Fish[] fishes = levelController.fishHolder.GetComponentsInChildren<Fish>();
+        Dictionary<int, List<Fish>> dictFishes = new Dictionary<int, List<Fish>>();
+
+        int totalSpotFull = 0;
+        foreach (var fish in fishes)
+        {
+            if (totalSpotFull >= spotController.spots.Count) break;
+            int id =  fish.id;
+            if(!dictFishes.ContainsKey(id))
+                dictFishes.Add(id, new List<Fish>());
+
+            if (dictFishes[id].Count < 2)
+            {
+                spotController.OnFishSelected(fish);
+                dictFishes[id].Add(fish);
+                totalSpotFull++;
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
+        GamePlayController.instance.gameScene.ShowLosePopup();
+        Debug.Log("Auto Lose completed");
     }
 }
