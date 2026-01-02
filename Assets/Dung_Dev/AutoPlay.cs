@@ -12,6 +12,7 @@ public class AutoPlay : MonoBehaviour
 
     private IEnumerator AutoWinRoutine()
     {
+        yield return new WaitForSeconds(1f);
         var spotController = GamePlayController.instance.playerContain.spotController;
         var levelController = GamePlayController.instance.playerContain.levelGenerator;
         
@@ -52,13 +53,14 @@ public class AutoPlay : MonoBehaviour
     }
 
     [ContextMenu("Auto Lose")]
-    private void AutoLose()
+    public void AutoLose()
     {
         StartCoroutine(AutoLoseRoutine());
     }
 
     private IEnumerator AutoLoseRoutine()
     {
+        yield return new WaitForSeconds(1f);
         var spotController = GamePlayController.instance.playerContain.spotController;
         var levelController = GamePlayController.instance.playerContain.levelGenerator;
         

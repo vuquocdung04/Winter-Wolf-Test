@@ -26,6 +26,7 @@ public class GamePlayController : MonoBehaviour
     {
         gameScene.Init();
         playerContain.Init();
+        gameMode = GameMode.Default;
     }
 
     public void SetGameModeDefault() => gameMode = GameMode.Default;

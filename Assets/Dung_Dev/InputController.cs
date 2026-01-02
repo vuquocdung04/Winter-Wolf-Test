@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class InputController : MonoBehaviour
@@ -7,8 +8,10 @@ public class InputController : MonoBehaviour
     private Vector3 mouseWorldPos;
 
     public bool isBusy { get; private set; }
-    
+    public bool isWin;
+    public bool isLose;
 
+    public bool canPlay;
     public void Init()
     {
         mainCamera = Camera.main;
@@ -16,7 +19,8 @@ public class InputController : MonoBehaviour
 
     private void Update()
     {
-        if (isBusy) return;
+        if(!canPlay) return;
+        if(isBusy || isLose || isWin) return;
 
         GetMousePos();
         if (Input.GetMouseButtonDown(0))
@@ -38,6 +42,11 @@ public class InputController : MonoBehaviour
         }
     }
 
+    public void CanPlayBeforeOneSecond()
+    {
+        // delay one second
+        DOVirtual.DelayedCall(1f, () => canPlay = true);
+    }
     public bool SetBusy(bool state) => isBusy = state;
 
     private void GetMousePos()
