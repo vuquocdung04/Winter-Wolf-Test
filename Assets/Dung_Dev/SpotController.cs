@@ -8,7 +8,7 @@ public class SpotController : MonoBehaviour
     public int totalSpotNeeded = 4;
 
     public List<Spot> spots = new List<Spot>();
-
+    
     public void Init()
     {
     }
@@ -60,10 +60,18 @@ public class SpotController : MonoBehaviour
         if (listToDestroy.Count >= 3)
         {
             for(int i = listToDestroy.Count - 1; i >= 0; i--)
-                Destroy(listToDestroy[i].gameObject);
+                listToDestroy[i].Animation();
             
+            GamePlayController.instance.playerContain.levelGenerator.HandleWin();
             MoveAllToLeft();
             Debug.Log("Match 3");
+        }
+        else
+        {
+            if (IsSpotFull())
+            {
+                GamePlayController.instance.gameScene.ShowLosePopup();
+            }
         }
     }
 

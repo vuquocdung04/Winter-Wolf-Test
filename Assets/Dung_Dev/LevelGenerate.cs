@@ -8,12 +8,24 @@ public class LevelGenerate : MonoBehaviour
     public int boardSizeX = 4;
     public int boardSizeY = 6;
     public float spacing = 1;
-    
     public List<Fish> fishPrefabs = new List<Fish>();
+
+    private int totalWin;
+    public int currentWin;
     public void Init()
     {
-        
+        totalWin = (boardSizeY *  boardSizeX) / 3;
     }
+
+    public void HandleWin()
+    {
+        currentWin++;
+        if (currentWin == totalWin)
+        {
+            GamePlayController.instance.gameScene.ShowWinPopup();
+        }
+    }
+    
 
     [ContextMenu("Generate Level")]
     private void GenerateLevel()
