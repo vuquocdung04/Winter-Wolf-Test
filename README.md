@@ -1,26 +1,34 @@
 # Winter-Wolf-Test
+### 👀Preview:
+[![Google Drive](https://img.shields.io/badge/Google%20Drive-34A853?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/u/0/folders/157z-U7OCYWteO5ykkyjAlN5hSCav7AgY)
+[![Unity 2020.3.38f1 LTS](https://img.shields.io/badge/Unity-2022.3.38f1%20LTS-blue?style=for-the-badge&logo=unity&logoColor=white)](https://unity.com/releases/editor/whats-new/2020.3.38)
 
 ## Tasks Done ✅
 ### Task1: Reskin ✅
-### Task2: Change the Gameplay ✅
-    1.Change the current gameplay to a new one:
-    2.Move items from the board to the bottom cells by tapping on them.
-    3.Once an item moves to a bottom cell, you can’t move it back to the board.
-    4.If there are exactly three identical items in the bottom cells, they will be cleared.
-    5.Clear the board to win.
-    6.The player loses if he/she fills up all the bottom cells.
-### Task 2: Requirements ✅
-    1.The number of identical items on the initial board must be divisible by 3.
-    2.The bottom area contains 5 cells.
-    3.Show a simple winning screen when the player wins.
-    4.Show a simple losing screen when the player loses.
-    5.Create a simple Home screen with an ‘Autoplay’ button. Once clicked, the game will autoplay until it wins, with each action having a 0.5s delay.
-    6.Add an ‘Auto Lose’ button to the Home screen. Once clicked, the game will autoplay with the goal of losing, with each action having a 0.5s delay.
-### Task 3: Improve the gameplay ✅
-    1.Ensure the initial board contains all types of fish.
-    2.Add an animation when an item moves from the board to the cells and another animation when identical items are cleared (scaling to 0).
-    3.Add a Time Attack Mode.
-    4.Add a ‘Time Attack’ button to the Home Screen to play a separate game mode.
-    5.The player no longer loses the game when the cells are filled.
-    6.The player can return an item from a cell to its initial position on the board by tapping it.
-    7.The player loses if they fail to clear the board within 1 minute.
+### Task 2: Change the Gameplay ✅
+- Move items from board to bottom cells by tapping
+- Items in bottom cells cannot be moved back to board
+- Three identical items in bottom cells will be cleared automatically
+- Clear the board to win
+- Lose if all bottom cells are filled
+
+**Requirements:**
+- Initial board items count must be divisible by 3 for each type
+- Bottom area contains 5 cells
+- Simple winning/losing screens
+- Home screen with 'Autoplay' button (0.5s delay per action)
+- 'Auto Lose' button on Home screen (0.5s delay per action)
+
+### Task 3: Improve the Gameplay ✅
+- Ensure initial board contains all fish types
+- Add animations:
+  - Item moving from board to cells
+  - Items clearing (scale to 0)
+- **Time Attack Mode:**
+  - New 'Time Attack' button on Home Screen
+  - Players can return items from cells back to board
+  - No lose condition when cells are filled
+  - Lose if board not cleared within 60 seconds
+
+![4 mode](pic1.png)
+![gameplay](pic2.png)
